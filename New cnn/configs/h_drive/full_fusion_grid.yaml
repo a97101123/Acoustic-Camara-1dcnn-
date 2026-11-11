@@ -1,0 +1,5 @@
+output_root: experiments/h_drive/full_fusion_grid
+nffts: [128, 192, 256, 320, 384, 448, 512]
+seeds: [42, 43, 44]
+epochs: 100
+device: auto

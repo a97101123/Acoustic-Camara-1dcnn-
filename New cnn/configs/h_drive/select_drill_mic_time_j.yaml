@@ -1,0 +1,7 @@
+experiment_name: drill_03m0d_mic_time_j
+input_hdf5: experiments/h_drive/drilling/features/20261012_205730_drilling_03m0d_noac_mic_nfft128/full_features.h5
+output_root: experiments/h_drive/drilling/selection
+split: train
+groups: {mic_time: {method: j, top_k: 5}}
+selection: {r2_threshold: 0.5}
+plot: {dpi: 160, selected_r2_scatter_only: true}

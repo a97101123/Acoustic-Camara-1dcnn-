@@ -1,0 +1,5 @@
+includes:
+- turning_noac_excel_training.yaml
+overrides:
+  selection:
+    methods: [r2]

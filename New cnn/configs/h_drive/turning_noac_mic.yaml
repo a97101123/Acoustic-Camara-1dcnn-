@@ -1,0 +1,10 @@
+experiment_name: turning_noac_mic_nfft128
+excel: data/h_drive/turning_noAC.csv
+sensor: mic
+process: turning
+condition: noAC
+nfft: 128
+window_seconds: 0.5
+hop_seconds: 0.1
+seed: 42
+output_root: experiments/h_drive/turning/features

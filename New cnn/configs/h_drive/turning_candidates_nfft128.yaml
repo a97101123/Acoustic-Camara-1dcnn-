@@ -1,0 +1,31 @@
+output_root: experiments/h_drive/turning/models/nfft128
+device: auto
+seeds: [42, 43, 44]
+epochs: 100
+candidates:
+  - {name: noac_mic_frequency_j, hdf5: experiments/h_drive/turning/features/20261012_210447_turning_noac_mic_nfft128/full_features.h5, group: mic_frequency, method: j, top_k: 8}
+  - {name: noac_mic_frequency_r2, hdf5: experiments/h_drive/turning/features/20261012_210447_turning_noac_mic_nfft128/full_features.h5, group: mic_frequency, method: r2}
+  - {name: noac_mic_time_j, hdf5: experiments/h_drive/turning/features/20261012_210447_turning_noac_mic_nfft128/full_features.h5, group: mic_time, method: j, top_k: 5}
+  - {name: noac_mic_time_r2, hdf5: experiments/h_drive/turning/features/20261012_210447_turning_noac_mic_nfft128/full_features.h5, group: mic_time, method: r2}
+  - {name: noac_mic_both_j, hdf5: experiments/h_drive/turning/features/20261012_210447_turning_noac_mic_nfft128/full_features.h5, group: all, method: j, top_k: 12}
+  - {name: noac_mic_both_r2, hdf5: experiments/h_drive/turning/features/20261012_210447_turning_noac_mic_nfft128/full_features.h5, group: all, method: r2}
+  - {name: withac_mic_frequency_j, hdf5: experiments/h_drive/turning/features/20261012_210818_turning_withac_mic_nfft128/full_features.h5, group: mic_frequency, method: j, top_k: 8}
+  - {name: withac_mic_frequency_r2, hdf5: experiments/h_drive/turning/features/20261012_210818_turning_withac_mic_nfft128/full_features.h5, group: mic_frequency, method: r2}
+  - {name: withac_mic_time_j, hdf5: experiments/h_drive/turning/features/20261012_210818_turning_withac_mic_nfft128/full_features.h5, group: mic_time, method: j, top_k: 5}
+  - {name: withac_mic_time_r2, hdf5: experiments/h_drive/turning/features/20261012_210818_turning_withac_mic_nfft128/full_features.h5, group: mic_time, method: r2}
+  - {name: withac_mic_both_j, hdf5: experiments/h_drive/turning/features/20261012_210818_turning_withac_mic_nfft128/full_features.h5, group: all, method: j, top_k: 12}
+  - {name: withac_mic_both_r2, hdf5: experiments/h_drive/turning/features/20261012_210818_turning_withac_mic_nfft128/full_features.h5, group: all, method: r2}
+  - {name: acc_j, hdf5: experiments/h_drive/turning/features/20261012_211128_turning_acc_nfft128/full_features.h5, group: acc, method: j, top_k: 8}
+  - {name: acc_r2, hdf5: experiments/h_drive/turning/features/20261012_211128_turning_acc_nfft128/full_features.h5, group: acc, method: r2}
+  - {name: noac_acc_mic_frequency_j, hdf5: experiments/h_drive/turning/fusion/noac_nfft128_groups.h5, group: acc_mic_frequency, method: j, top_k: 16}
+  - {name: noac_acc_mic_frequency_r2, hdf5: experiments/h_drive/turning/fusion/noac_nfft128_groups.h5, group: acc_mic_frequency, method: r2}
+  - {name: noac_acc_mic_time_j, hdf5: experiments/h_drive/turning/fusion/noac_nfft128_groups.h5, group: acc_mic_time, method: j, top_k: 16}
+  - {name: noac_acc_mic_time_r2, hdf5: experiments/h_drive/turning/fusion/noac_nfft128_groups.h5, group: acc_mic_time, method: r2}
+  - {name: noac_acc_mic_both_j, hdf5: experiments/h_drive/turning/fusion/noac_nfft128_groups.h5, group: all, method: j, top_k: 16}
+  - {name: noac_acc_mic_both_r2, hdf5: experiments/h_drive/turning/fusion/noac_nfft128_groups.h5, group: all, method: r2}
+  - {name: withac_acc_mic_frequency_j, hdf5: experiments/h_drive/turning/fusion/withac_nfft128_groups.h5, group: acc_mic_frequency, method: j, top_k: 16}
+  - {name: withac_acc_mic_frequency_r2, hdf5: experiments/h_drive/turning/fusion/withac_nfft128_groups.h5, group: acc_mic_frequency, method: r2}
+  - {name: withac_acc_mic_time_j, hdf5: experiments/h_drive/turning/fusion/withac_nfft128_groups.h5, group: acc_mic_time, method: j, top_k: 16}
+  - {name: withac_acc_mic_time_r2, hdf5: experiments/h_drive/turning/fusion/withac_nfft128_groups.h5, group: acc_mic_time, method: r2}
+  - {name: withac_acc_mic_both_j, hdf5: experiments/h_drive/turning/fusion/withac_nfft128_groups.h5, group: all, method: j, top_k: 16}
+  - {name: withac_acc_mic_both_r2, hdf5: experiments/h_drive/turning/fusion/withac_nfft128_groups.h5, group: all, method: r2}

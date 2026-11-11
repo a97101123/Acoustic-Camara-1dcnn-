@@ -1,0 +1,172 @@
+dataset:
+  knife_ids:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  stage_ids:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 22
+  - 23
+  - 24
+  - 25
+  - 26
+  exclude_stages:
+  - 13
+  - 14
+  labeling:
+    method: stage_groups
+    groups:
+    - - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 11
+      - 12
+    - - 15
+      - 16
+      - 17
+      - 18
+      - 19
+      - 20
+      - 21
+      - 22
+      - 23
+      - 24
+      - 25
+      - 26
+  class_names:
+  - Low
+  - High
+conditions:
+- turning_noac
+nffts:
+- 512
+split_seed: 42
+model:
+  filters:
+  - 32
+  - 64
+  kernel_size: 3
+  dropout: 0
+  normalization: layer
+  norm_groups: 1
+  normalization_epsilon: 1.0e-05
+preprocessing:
+  scaler: median_iqr
+  scale_epsilon: 1.0e-08
+training:
+  seed_start: 42
+  runs: 1
+  epochs: 15
+  batch_size: 32
+  validation_batch_size: 32
+  checkpoint_every: 5
+  severe_class_index: 1
+  learning_rate: 0.001
+  preload_device: false
+  optimizer:
+    name: adam
+    betas:
+    - 0.9
+    - 0.999
+    epsilon: 1.0e-07
+    weight_decay: 0.0001
+    amsgrad: false
+  matlab_adam: true
+device: cuda
+cpu_threads: 4
+cache_features: false
+evaluation:
+  strategy: fixed_knife
+  test_knife: 9
+  val_knives:
+  - 7
+  - 8
+  prediction_rule: argmax
+  batch_size: 256
+  inference_batch_size: 32
+  inference:
+    start_seconds: 0.0
+    duration_seconds: null
+selection:
+  methods:
+  - r2
+  j:
+    acc_axis_quota: &id001
+      x: 4
+      y: 4
+      z: 3
+    mic_domain_quota: &id002
+      mic_frequency: 7
+      mic_time: 4
+    require_equal_sensor_totals: true
+  r2:
+    score_backend: matrix
+    report_thresholds:
+    - 0.0
+    - 0.05
+    - 0.1
+    - 0.15
+    - 0.2
+    - 0.25
+    - 0.3
+    - 0.35
+    - 0.4
+    - 0.45
+    - 0.5
+    - 0.55
+    - 0.6
+    - 0.65
+    - 0.7
+    - 0.75
+    - 0.8
+    - 0.85
+    - 0.9
+    - 0.95
+    - 1.0
+    - 0.99
+    mode: top
+    acc_axis_quota: *id001
+    mic_domain_quota: *id002
+    require_equal_sensor_totals: true
+output:
+  root: C:\Users\KaiyiKomo\Desktop\新增資料夾 (2)\New cnn\results
+  name: binary_st26_noac_r2_matlab_adam_trial
+  plot_dpi: 160
+io:
+  compression: gzip
+  gzip_level: 4
+  read_batch_size: 64
+  write_batch_size: 16

@@ -1,0 +1,9 @@
+hdf5: experiments/h_drive/drilling/features/20261012_212618_drilling_06m15d_acc_nfft128/full_features.h5
+group: acc
+method: j
+top_k: 8
+folds: 5
+epochs: 100
+seed: 42
+device: auto
+output: experiments/h_drive/cross_validation/drilling_06m15d_acc_j

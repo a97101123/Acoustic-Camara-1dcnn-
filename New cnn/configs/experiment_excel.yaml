@@ -1,0 +1,9 @@
+includes:
+- turning_features.yaml
+overrides:
+  sensors: [mic]
+  conditions: [turning_noac]
+  input:
+    excel: ../data/sources/turning_ml.xlsx
+    sheet: 0
+    duration_seconds: 25.0

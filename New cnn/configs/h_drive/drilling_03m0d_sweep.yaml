@@ -1,0 +1,12 @@
+output_root: experiments/h_drive/drilling/models/03m0d_noac_nfft128
+device: auto
+seeds: [42, 43, 44]
+jobs:
+  - {name: mic_frequency_j, hdf5: experiments/h_drive/drilling/features/20261012_205730_drilling_03m0d_noac_mic_nfft128/full_features.h5, group: mic_frequency, selection: experiments/h_drive/drilling/selection/20261012_210214_drill_03m0d_mic_freq_j/selected_features.json, epochs: 100}
+  - {name: mic_frequency_r2, hdf5: experiments/h_drive/drilling/features/20261012_205730_drilling_03m0d_noac_mic_nfft128/full_features.h5, group: mic_frequency, selection: experiments/h_drive/drilling/selection/20261012_210218_drill_03m0d_mic_freq_r2/selected_features.json, epochs: 100}
+  - {name: mic_time_j, hdf5: experiments/h_drive/drilling/features/20261012_205730_drilling_03m0d_noac_mic_nfft128/full_features.h5, group: mic_time, selection: experiments/h_drive/drilling/selection/20261012_210221_drill_03m0d_mic_time_j/selected_features.json, epochs: 100}
+  - {name: mic_time_r2, hdf5: experiments/h_drive/drilling/features/20261012_205730_drilling_03m0d_noac_mic_nfft128/full_features.h5, group: mic_time, selection: experiments/h_drive/drilling/selection/20261012_210225_drill_03m0d_mic_time_r2/selected_features.json, epochs: 100}
+  - {name: acc_j, hdf5: experiments/h_drive/drilling/features/20261012_205826_drilling_03m0d_acc_nfft128/full_features.h5, group: acc, selection: experiments/h_drive/drilling/selection/20261012_210228_drill_03m0d_acc_j/selected_features.json, epochs: 100}
+  - {name: acc_r2, hdf5: experiments/h_drive/drilling/features/20261012_205826_drilling_03m0d_acc_nfft128/full_features.h5, group: acc, selection: experiments/h_drive/drilling/selection/20261012_210231_drill_03m0d_acc_r2/selected_features.json, epochs: 100}
+  - {name: fusion_j, hdf5: experiments/h_drive/drilling/fusion/03m0d_noac_nfft128.h5, group: all, selection: experiments/h_drive/drilling/selection/20261012_210244_drill_03m0d_fusion_j/selected_features.json, epochs: 100}
+  - {name: fusion_r2, hdf5: experiments/h_drive/drilling/fusion/03m0d_noac_nfft128.h5, group: all, selection: experiments/h_drive/drilling/selection/20261012_210248_drill_03m0d_fusion_r2/selected_features.json, epochs: 100}

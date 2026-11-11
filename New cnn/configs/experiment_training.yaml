@@ -1,0 +1,6 @@
+includes:
+- turning_training.yaml
+overrides:
+  training:
+    epochs: 2
+  nffts: [128]

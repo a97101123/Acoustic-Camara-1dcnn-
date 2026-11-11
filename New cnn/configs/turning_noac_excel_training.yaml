@@ -1,0 +1,7 @@
+includes:
+- turning_top_training.yaml
+overrides:
+  conditions: [turning_noac]
+  device: cuda
+  output:
+    name: turning_noac_excel_um_training

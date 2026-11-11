@@ -24,3 +24,7 @@
 | WAV 推論 | `wavprec.m`（選取 WAV）、`tw_predict_wav.m`（執行推論） |
 
 批次入口會為每個標籤準備訓練資料，迴圈結束後用最後一組設定呼叫 CNN 訓練。訓練產物預設位於 `cnn2/train_ready2/`。推論前請在 `wavprec.m` 指定實際的模型檔案。
+
+## Python Wear CNN
+
+Python 版支援車削與鑽削刀具磨耗分類。原始碼、測試、執行腳本及 YAML 設定集中在 `New cnn/`。安裝方式見 [Python 環境](New%20cnn/PYTHON_ENVIRONMENT.md)，執行步驟及本機資料需求見 [Wear CNN README](New%20cnn/README.md)。

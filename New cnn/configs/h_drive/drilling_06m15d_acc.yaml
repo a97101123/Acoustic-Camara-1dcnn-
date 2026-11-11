@@ -1,0 +1,10 @@
+experiment_name: drilling_06m15d_acc_nfft128
+excel: data/h_drive/drilling_acc_06m15d.csv
+sensor: acc
+process: drilling
+condition: 06m15d_acc
+nfft: 128
+window_seconds: 0.5
+hop_seconds: 0.1
+seed: 42
+output_root: experiments/h_drive/drilling/features

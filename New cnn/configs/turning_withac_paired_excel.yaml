@@ -1,0 +1,14 @@
+includes:
+- turning_features.yaml
+overrides:
+  conditions: [turning_withac]
+  input:
+    excel:
+      mic: ../data/sources/ml_um/mic_withac.xlsx
+      acc_x: ../data/sources/ml_um/acc_x.xlsx
+      acc_y: ../data/sources/ml_um/acc_y.xlsx
+      acc_z: ../data/sources/ml_um/acc_z.xlsx
+    sheet: 0
+    duration_seconds: 25.0
+  output:
+    name: turning_withac_excel_um

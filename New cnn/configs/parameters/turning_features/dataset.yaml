@@ -1,0 +1,13 @@
+process: turning
+sensors:
+- mic
+- acc
+exclude_tools: []
+input:
+  duration_seconds: 25.0
+  sheet: 0
+  excel: ../data/sources/turning_current.csv
+  data_root: D:/turning
+conditions:
+- turning_noac
+- turning_withac

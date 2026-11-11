@@ -1,0 +1,8 @@
+includes:
+- turning_binary_st26_noac.yaml
+overrides:
+  selection:
+    methods:
+    - j
+  output:
+    name: binary_st26_noac_j_top22

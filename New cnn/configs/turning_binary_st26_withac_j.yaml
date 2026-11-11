@@ -1,0 +1,8 @@
+includes:
+- turning_binary_st26_withac.yaml
+overrides:
+  selection:
+    methods:
+    - j
+  output:
+    name: binary_st26_withac_j_top22

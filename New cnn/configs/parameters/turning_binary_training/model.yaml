@@ -1,0 +1,12 @@
+model:
+  filters:
+  - 32
+  - 64
+  kernel_size: 3
+  dropout: 0.2
+  normalization: group
+  norm_groups: 1
+  normalization_epsilon: 1.0e-05
+preprocessing:
+  scaler: median_iqr
+  scale_epsilon: 1.0e-08

@@ -1,0 +1,12 @@
+evaluation:
+  strategy: fixed_knife
+  test_knife: 9
+  val_knives:
+  - 7
+  - 8
+  prediction_rule: argmax
+  batch_size: 256
+  inference_batch_size: 32
+  inference:
+    start_seconds: 0.0
+    duration_seconds: null

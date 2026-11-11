@@ -1,0 +1,33 @@
+output_mode: features_only
+channel_mix: mean
+nffts:
+- 128
+- 192
+- 256
+- 320
+- 384
+- 448
+- 512
+sampling:
+  target_sample_rate: 48000
+  overlap_fraction: 0.75
+  chunk_seconds: 0.5
+  trim_fraction: 0.2
+  segments_per_record: 5
+  chunk_retention: all_complete
+  clip_frequency_at_mean: true
+  time_backend: matrix
+  frame_batch_size: 2048
+  verbose: true
+  mode: analysis_chunks
+  acc_bands:
+  - - 0
+    - 750
+  - - 1125
+    - 1500
+  - - 2250
+    - 2625
+  - - 3000
+    - 3750
+  - - 4125
+    - 4875

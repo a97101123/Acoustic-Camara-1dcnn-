@@ -1,0 +1,13 @@
+dataset:
+  labeling:
+    method: training_tertiles
+  class_names:
+  - 初期
+  - 正常
+  - 嚴重
+  knife_ids: null
+  stage_ids: null
+  exclude_stages: []
+conditions: null
+nffts: null
+split_seed: 42

@@ -1,0 +1,10 @@
+records: 128
+score_features: 256
+samples: 16
+frames: 128
+features: 16
+read_batch_size: 8
+repeats: 3
+seed: 42
+score_backends: [legacy, matrix]
+compressions: [gzip, lzf, none]

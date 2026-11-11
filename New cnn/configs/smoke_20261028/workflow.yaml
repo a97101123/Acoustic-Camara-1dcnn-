@@ -1,0 +1,7 @@
+output: "C:\\Users\\KaiyiKomo\\Desktop\\\u65B0\u589E\u8CC7\u6599\u593E (2)\\New cnn\\\
+  logs\\smoke_20261028"
+steps:
+- command: build-features
+  config: features.yaml
+- command: train-batch
+  config: training.yaml

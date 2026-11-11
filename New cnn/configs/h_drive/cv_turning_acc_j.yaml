@@ -1,0 +1,9 @@
+hdf5: experiments/h_drive/turning/features/20261012_211128_turning_acc_nfft128/full_features.h5
+group: acc
+method: j
+top_k: 8
+folds: 5
+epochs: 100
+seed: 42
+device: auto
+output: experiments/h_drive/cross_validation/turning_acc_j

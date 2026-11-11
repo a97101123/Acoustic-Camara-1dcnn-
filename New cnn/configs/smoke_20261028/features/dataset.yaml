@@ -1,0 +1,10 @@
+process: turning
+sensors:
+- mic
+- acc
+exclude_tools: []
+input:
+  excel: C:\Users\KaiyiKomo\Desktop\新增資料夾 (2)\New cnn\configs\smoke_20261028\sources.csv
+  data_root: D:/turning
+conditions:
+- turning_noac

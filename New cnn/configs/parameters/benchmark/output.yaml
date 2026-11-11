@@ -1,0 +1,6 @@
+output: ../logs/benchmark
+io:
+  compression: gzip
+  gzip_level: 4
+  read_batch_size: 64
+  write_batch_size: 16

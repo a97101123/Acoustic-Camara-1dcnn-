@@ -1,0 +1,5 @@
+jobs:
+  - features: turning_features.yaml
+    training: turning_training.yaml
+  - features: drilling_features.yaml
+    training: drilling_training.yaml

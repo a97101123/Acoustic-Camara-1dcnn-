@@ -1,0 +1,7 @@
+experiment_name: drill_03m0d_fusion_r2
+input_hdf5: experiments/h_drive/drilling/fusion/03m0d_noac_nfft128.h5
+output_root: experiments/h_drive/drilling/selection
+split: train
+groups: {all: {method: r2}}
+selection: {r2_threshold: 0.5}
+plot: {dpi: 160, selected_r2_scatter_only: true}

@@ -1,0 +1,13 @@
+process: drilling
+sensors:
+- mic
+- acc
+exclude_tools: []
+input:
+  duration_seconds: 25.0
+  sheet: 0
+  excel: ../data/sources/drilling_current.csv
+  data_root: D:/drilling
+conditions:
+- drilling_06m0d_noac
+- drilling_06m0d_withac

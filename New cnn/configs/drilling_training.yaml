@@ -1,0 +1,7 @@
+includes:
+- parameters/drilling_training/dataset.yaml
+- parameters/drilling_training/model.yaml
+- parameters/drilling_training/training.yaml
+- parameters/drilling_training/evaluation.yaml
+- parameters/drilling_training/selection.yaml
+- parameters/drilling_training/output.yaml

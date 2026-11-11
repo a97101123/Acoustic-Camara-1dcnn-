@@ -1,0 +1,10 @@
+experiment_name: drilling_06m0d_noac_mic_nfft128
+excel: data/h_drive/drilling_mic_06m0d_noAC2.csv
+sensor: mic
+process: drilling
+condition: 06m0d_noAC2
+nfft: 128
+window_seconds: 0.5
+hop_seconds: 0.1
+seed: 42
+output_root: experiments/h_drive/drilling/features

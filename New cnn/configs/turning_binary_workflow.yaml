@@ -1,0 +1,6 @@
+output: ../logs/turning_binary_workflow
+steps:
+  - command: build-features
+    config: turning_features.yaml
+  - command: train-batch
+    config: turning_binary_training.yaml

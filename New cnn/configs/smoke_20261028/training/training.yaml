@@ -1,0 +1,21 @@
+training:
+  seed_start: 42
+  runs: 1
+  epochs: 2
+  batch_size: 64
+  validation_batch_size: 64
+  checkpoint_every: 1
+  severe_class_index: 1
+  learning_rate: 0.001
+  preload_device: false
+  optimizer:
+    name: adam
+    betas:
+    - 0.9
+    - 0.999
+    epsilon: 1.0e-08
+    weight_decay: 0.0
+    amsgrad: false
+device: cuda
+cpu_threads: 4
+cache_features: false

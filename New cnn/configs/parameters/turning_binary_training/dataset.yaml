@@ -1,0 +1,56 @@
+dataset:
+  knife_ids:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  stage_ids:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  exclude_stages:
+  - 7
+  labeling:
+    method: stage_groups
+    groups:
+    - - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+    - - 8
+      - 9
+      - 10
+      - 11
+      - 12
+      - 13
+  class_names:
+  - Low
+  - High
+conditions:
+- turning_noac
+- turning_withac
+nffts:
+- 128
+- 192
+- 256
+- 320
+- 384
+- 512
+split_seed: 42

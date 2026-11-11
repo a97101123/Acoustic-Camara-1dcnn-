@@ -1,0 +1,9 @@
+output:
+  root: C:\Users\KaiyiKomo\Desktop\新增資料夾 (2)\New cnn\results
+  name: smoke_20261028
+  plot_dpi: 160
+io:
+  compression: gzip
+  gzip_level: 4
+  read_batch_size: 64
+  write_batch_size: 16

@@ -1,0 +1,7 @@
+includes:
+- training/dataset.yaml
+- training/model.yaml
+- training/training.yaml
+- training/evaluation.yaml
+- training/selection.yaml
+- training/output.yaml
