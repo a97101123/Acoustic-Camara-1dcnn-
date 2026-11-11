@@ -1,0 +1,9 @@
+# Local measurements and generated artifacts
+*.xlsx
+*.xls
+*.wav
+*.mat
+*.asv
+/matlab/acoustic/
+/matlab/wavecut/
+/matlab/cnn2/
