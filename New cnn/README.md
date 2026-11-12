@@ -20,9 +20,21 @@
 
 此命令會重建全部特徵並訓練兩流程、四條件、七種 NFFT、J/R²、每組三個 seed。失敗會記錄，沒有特徵通過 R² 門檻時不補低分特徵。
 
+## 車削 noAC 修正版
+
+先依 [Python 與 CUDA 環境](docs/PYTHON_ENVIRONMENT.md) 安裝套件，再備妥 [配對 Excel 設定](configs/turning_noac_paired_excel.yaml) 指定的本機 MIC 和 ACC 工作簿及 WAV。從 `New cnn/` 執行：
+
+```powershell
+wear-cnn run-workflow --config configs/turning_noac_acc_fft_workflow.yaml
+```
+
+此流程建立一份共用特徵集，ACC X/Y/Z 與 MIC 各自使用逐 FFT 頻點候選。二分類與三分類各跑 7 個 NFFT 和 R²／Fisher J，階段篩選由各自的 YAML 控制。執行紀錄寫入 `logs/turning_noac_acc_fft_workflow/workflow_log.json`。
+
+新特徵和結果分別位於 `outputs/YYYY-MM/features/turning/` 與 `outputs/YYYY-MM/results/turning/`。每個執行目錄的 `run.json` 記錄名稱、時間與設定。從訓練結果的 `01_summary/` 查看總表，或進入 `03_details/<條件>/nfft<N>/<方法>/figures/` 查看感測器分組圖。
+
 ## 設定
 
-共用設定加實驗差異、直接讀 Excel 工作表的範例見 [EXPERIMENTS.md](EXPERIMENTS.md)。
+共用設定加實驗差異、直接讀 Excel 工作表的範例見 [EXPERIMENTS.md](docs/EXPERIMENTS.md)。
 
 使用時明確選擇 turning_features.yaml、turning_training.yaml、drilling_features.yaml、drilling_training.yaml。這些檔案只有功能設定引用，參數拆在 `configs/parameters/<名稱>/`，缺值或未知欄位直接報錯。turning_binary_training.yaml 提供 St1–13 排除 St7 的二分類範例；turning_binary_workflow.yaml 串接特徵建立與二分類訓練。
 
@@ -30,10 +42,10 @@
 - training 設定刀具切分、J/R²、seed、epoch 和裝置。
 - 新實驗保留全部完整 chunk。block_size 與舊 chunk 保留規則已移除。
 - 同刀只屬於一個 split；標籤三分位數、特徵選擇及標準化只使用訓練資料。
-- 每筆加工的 chunk 共用來源 WearValue。J 使用三類標籤；R² 使用逐筆訓練錄音代表值，不會自動採用試跑的跨刀平均方案。
+- 每筆加工的 chunk 共用來源 WearValue。J 使用該次實驗的分類標籤；R² 使用逐筆訓練錄音代表值，不會自動採用試跑的跨刀平均方案。
 - 嚴重類機率門檻仍以驗證 Macro-F1 選擇，模型與分類規則未改。
 
-二分類設定與功能檔位置見 [CONFIGURATION.md](CONFIGURATION.md)。三分類清單明確指定訓練磨耗三分位數、隨機整刀切分及驗證門檻。二分類範例使用 argmax；類別數由 groups 與 class_names 決定，模型、機率欄位、混淆矩陣及 WAV 推論自動一致。
+二分類設定與功能檔位置見 [CONFIGURATION.md](docs/CONFIGURATION.md)。三分類清單明確指定訓練磨耗三分位數、隨機整刀切分及驗證門檻。二分類範例使用 argmax；類別數由 groups 與 class_names 決定，模型、機率欄位、混淆矩陣及 WAV 推論自動一致。
 
 目前輸入是 data/sources/turning_current.csv、drilling_current.csv。車削新表由完整的 h_drive 來源另建；鑽削沿用三階段來源及每段五孔切分。原始表及 WearValue 未改，來源 hash 記錄於同名 provenance.json。
 
@@ -54,4 +66,4 @@
 .\.venv-review\Scripts\ruff.exe format --check src tools tests
 ```
 
-其他說明見 ARCHITECTURE_RUNBOOK.md、ANALYSIS_SAMPLING.md、PYTHON_ENVIRONMENT.md。
+其他說明見 [架構與執行](docs/ARCHITECTURE_RUNBOOK.md)、[取樣與特徵](docs/ANALYSIS_SAMPLING.md)、[Python 與 CUDA 環境](docs/PYTHON_ENVIRONMENT.md)。
