@@ -1,5 +1,5 @@
 output:
-  root: ../features
+  root: ../outputs/{month}/features
   name: all_complete
 io:
   compression: gzip

@@ -260,7 +260,12 @@ def validate_feature_config(config_path):
 def build_features(config_path, on_run=None):
     source, cfg, frame, sampling, nffts = validate_feature_config(config_path)
     process = cfg["process"]
-    root = new_run(source.parent, cfg["output"], process)
+    root = new_run(
+        source.parent,
+        cfg["output"],
+        process,
+        settings={"nffts": list(nffts), "conditions": list(cfg["conditions"])},
+    )
     cfg["sampling"] = sampling
     (root / "config_resolved.yaml").write_text(
         yaml.safe_dump(cfg, sort_keys=False), encoding="utf-8"

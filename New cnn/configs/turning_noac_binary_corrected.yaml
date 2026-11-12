@@ -1,0 +1,10 @@
+includes:
+- turning_binary_st26_noac.yaml
+overrides:
+  nffts: null
+  dataset:
+    exclude_stages: [13, 14, 22, 23, 24, 25, 26]
+  selection:
+    methods: [r2, j]
+  output:
+    name: turning_noac_binary_corrected

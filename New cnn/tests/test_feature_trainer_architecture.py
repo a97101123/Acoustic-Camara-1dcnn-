@@ -242,7 +242,8 @@ def test_builder_and_trainer_without_source_wavs(tmp_path, custom):
         job = next(run.glob("03_details/*/nfft*/j"))
         registry = json.loads((job / "artifacts.json").read_text())
         assert all((job / s["directory"] / s["files"]["model"]).exists() for s in registry["seeds"])
-        top = pd.read_csv(job / registry["files"]["top"])
+        selection_dir = job / registry.get("selection_directory", ".")
+        top = pd.read_csv(selection_dir / registry["files"]["top"])
         assert top.sensor.value_counts().to_dict() == {"acc": 3, "mic": 3}
         checkpoint = (
             job / registry["seeds"][0]["directory"] / registry["seeds"][0]["files"]["model"]
@@ -251,7 +252,7 @@ def test_builder_and_trainer_without_source_wavs(tmp_path, custom):
         assert train_batch(train_config, resume=run) == run
         assert checkpoint.stat().st_mtime_ns == timestamp
         render_training_report(run)
-        assert (job / "figures/selected_top.png").exists()
+        assert list((job / "figures").glob("*_selected_top.png"))
         assert (job / "seed_42" / registry["seeds"][0]["files"]["curves"]).exists()
         assert (job / "ensemble" / registry["ensemble"]["predictions"]).exists()
         if custom:

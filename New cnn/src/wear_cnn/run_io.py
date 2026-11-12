@@ -105,13 +105,25 @@ def atomic_json(path, value):
         temporary.unlink(missing_ok=True)
 
 
-def new_run(base, output, process):
+def new_run(base, output, process, *, settings=None):
     name = output["name"]
     if Path(name).name != name or any(c in name for c in '<>:"/\\|?*'):
         raise ValueError("output.name must be a safe directory name")
-    root = resolve(base, output["root"]) / process
-    run = root / f"{name}_{datetime.now():%Y%m%d_%H%M%S}_{uuid.uuid4().hex[:6]}"
+    started = datetime.now().astimezone()
+    root = resolve(base, str(output["root"]).replace("{month}", started.strftime("%Y-%m")))
+    stamp = uuid.uuid4().hex[:6]
+    run = root / process / f"{started:%Y%m%d_%H%M%S}_{stamp}"
     run.mkdir(parents=True, exist_ok=False)
+    atomic_json(
+        run / "run.json",
+        {
+            "run_id": run.name,
+            "name": name,
+            "process": process,
+            "created_at": started.isoformat(),
+            "settings": settings or {},
+        },
+    )
     return run
 
 

@@ -1,5 +1,5 @@
 output:
-  root: ../results
+  root: ../outputs/{month}/results
   name: st13_binary_exclude7
   plot_dpi: 160
 io:

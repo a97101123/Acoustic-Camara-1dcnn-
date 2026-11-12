@@ -85,7 +85,7 @@ def sampling_options(options: dict | None) -> dict:
     if any(type(cfg[key]) is not bool for key in ("clip_frequency_at_mean", "verbose")):
         raise ValueError("sampling.clip_frequency_at_mean and sampling.verbose must be booleans")
     bands = cfg["acc_bands"]
-    if (
+    if bands is not None and (
         not isinstance(bands, list)
         or not bands
         or any(
@@ -96,7 +96,7 @@ def sampling_options(options: dict | None) -> dict:
             for band in bands
         )
     ):
-        raise ValueError("sampling.acc_bands must contain finite increasing frequency pairs")
+        raise ValueError("sampling.acc_bands must be null or contain finite increasing frequency pairs")
     return cfg
 
 
@@ -190,7 +190,7 @@ def analysis_sequence(rate: int, wave: np.ndarray, nfft: int, sensor: str, optio
         padded=False,
     )
     power = np.abs(spectrum) ** 2
-    if sensor == "mic":
+    if sensor == "mic" or cfg["acc_bands"] is None:
         # MATLAB's centered indices 65:128 for NFFT=128 retain DC, omit Nyquist.
         frequency_values = power[:-1].T
         frequency_names = [f"freq_{f:.3f}Hz" for f in frequencies[:-1]]

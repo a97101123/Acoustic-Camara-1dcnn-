@@ -1,5 +1,5 @@
 output:
-  root: ../results
+  root: ../outputs/{month}/results
   name: all_complete
   plot_dpi: 160
 io:

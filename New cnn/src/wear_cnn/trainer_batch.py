@@ -14,7 +14,7 @@ from .artifact_validation import valid_checkpoint
 from .classification import classification_from_config, classification_from_metadata
 from .domain_selection import select_domains
 from .evaluation import evaluate_hdf5
-from .features.plots import plot_r2_overlay, plot_r2_scatter, plot_score_overview
+from .features.plots import plot_feature_groups, wear_position_means
 from .features.r2_report import write_r2_threshold_report
 from .features.reader import FeatureReader
 from .features.selection import fisher_j_scores, r2_scores
@@ -182,64 +182,35 @@ def _render_training_report(root):
         job = artifact.parent
         registry = json.loads(artifact.read_text())
         names = registry["files"]
+        selection_directory = job / registry.get("selection_directory", ".")
         with h5py.File(job.parent / "split.h5") as store:
             class_names = list(classification_from_metadata(dict(store.attrs)).names)
-        selected = job / names["selection"]
+        selected = selection_directory / names["selection"]
         if not selected.exists():
             continue
-        scores = pd.read_csv(job / names["scores"])
-        chosen = json.loads(selected.read_text())["all"]["selected_indices"]
+        scores = pd.read_csv(selection_directory / names["scores"])
         method = scores.method.iloc[0]
-        plot_score_overview(
-            scores.feature_name.tolist(),
-            scores.score.to_numpy(),
-            chosen,
-            method,
-            job / "figures" / names["score_plot"],
-            report_config["output"]["plot_dpi"],
-            threshold=report_config["selection"]["r2"].get("threshold") if method == "r2" else None,
-        )
-        fig, ax = plt.subplots(figsize=(12, 7))
-        top = scores[scores.selected].sort_values("score")
-        ax.barh(top.feature_name, top.score)
-        ax.set(title=f"{method.upper()} selected training features", xlabel=method.upper())
-        fig.tight_layout()
-        fig.savefig(job / "figures" / names["top_plot"], dpi=report_config["output"]["plot_dpi"])
-        plt.close(fig)
+        means = None
         if method == "r2":
-            store = job.parent / "split.h5"
-            # Fail loudly if linked features are missing, rather than accepting VDS fill values.
-            link = json.loads((root / "04_feature_links/source.json").read_text())
-            if not Path(link["path"]).is_dir():
-                raise FileNotFoundError(link["path"])
-            table = FeatureReader(io_config=report_config["io"]).record_summary(store)
-            plot_r2_overlay(
+            chosen = json.loads(selected.read_text())["all"]["selected_indices"]
+            table = FeatureReader(io_config=report_config["io"]).record_summary(job.parent / "split.h5")
+            means, _ = wear_position_means(
                 table.wear,
                 table.values[:, chosen],
                 [table.feature_names[index] for index in chosen],
-                scores.score.to_numpy()[chosen],
-                job / "figures" / "r2_scatter_overlay.png",
-                report_config["output"]["plot_dpi"],
-                record_ids=table.record_ids,
-                tool_ids=table.tool_ids,
-                trend_output=job / "figures" / names["r2_overlay"],
+                table.record_ids,
+                table.tool_ids,
             )
-            x = table.wear
-            for index in chosen:
-                y = table.values[:, index]
-                scatter = resolve_names(
-                    TRAIN_FILES,
-                    registry.get("templates"),
-                    {**registry["context"], "feature_index": int(index)},
-                )["r2_scatter"]
-                plot_r2_scatter(
-                    x,
-                    y,
-                    table.feature_names[index],
-                    scores.score.iloc[index],
-                    job / "figures" / scatter,
-                    report_config["output"]["plot_dpi"],
-                )
+            means.to_csv(
+                selection_directory / "wear_position_means.csv",
+                index=False,
+                encoding="utf-8-sig",
+            )
+        plot_feature_groups(
+            scores, job / "figures", report_config["output"]["plot_dpi"],
+            means=means,
+            threshold=report_config["selection"]["r2"].get("threshold") if method == "r2" else None,
+        )
         for seed in registry["seeds"]:
             directory = job / seed["directory"]
             history = directory / seed["files"]["history"]
@@ -291,7 +262,7 @@ def _render_training_report(root):
             fig.savefig(root / "02_figures" / comparison, dpi=160)
             plt.close(fig)
     (root / report_names["readme"]).write_text(
-        f"# Training Run\n\n- [Summary](01_summary/{report_names['summary']})\n- [Comparison figures](02_figures/)\n- [Details and figures](03_details/)\n- [Feature Set link](04_feature_links/source.json)\n- [Resolved config](05_settings/config_resolved.yaml)\n",
+        f"# Training Run\n\n- [Summary](01_summary/{report_names['summary']})\n- [Comparison figures](02_figures/)\n- [Details](03_details/) by condition, NFFT, and selection method. Each method has grouped charts in `figures/`.\n- [Feature Set link](04_feature_links/source.json)\n- [Resolved config](05_settings/config_resolved.yaml)\n",
         encoding="utf-8",
     )
     output_manifest(root)
@@ -387,7 +358,17 @@ def train_batch(config_path, features=None, resume=None, on_run=None):
     root = (
         Path(resume).resolve()
         if resume
-        else new_run(source.parent, cfg["output"], manifest["process"])
+        else new_run(
+            source.parent,
+            cfg["output"],
+            manifest["process"],
+            settings={
+                "nffts": sorted({entry["nfft"] for entry in entries}),
+                "conditions": sorted({entry["condition"] for entry in entries}),
+                "class_names": cfg["dataset"]["class_names"],
+                "selection_methods": methods,
+            },
+        )
     )
     for name in ("01_summary", "02_figures", "03_details", "04_feature_links", "05_settings"):
         (root / name).mkdir(exist_ok=True)
@@ -458,10 +439,20 @@ def train_batch(config_path, features=None, resume=None, on_run=None):
                     "feature_index": 0,
                 }
                 names = resolve_names(TRAIN_FILES, cfg["output"].get("filenames"), context)
+                registry_path = job / "artifacts.json"
+                if registry_path.exists():
+                    selection_directory = json.loads(registry_path.read_text()).get(
+                        "selection_directory", "."
+                    )
+                else:
+                    selection_directory = "." if (job / names["selection"]).exists() else "selection"
+                selection_path = job / selection_directory
+                selection_path.mkdir(exist_ok=True)
                 registry = {
                     "context": context,
                     "templates": cfg["output"].get("filenames"),
                     "files": names,
+                    "selection_directory": selection_directory,
                     "seeds": [],
                     "ensemble": resolve_names(
                         EVAL_FILES,
@@ -483,7 +474,7 @@ def train_batch(config_path, features=None, resume=None, on_run=None):
                             ),
                         }
                     )
-                atomic_json(job / "artifacts.json", registry)
+                atomic_json(registry_path, registry)
                 row = {
                     "name": name,
                     "condition": entry["condition"],
@@ -497,10 +488,10 @@ def train_batch(config_path, features=None, resume=None, on_run=None):
                         "time": __import__("datetime").datetime.now().isoformat(),
                     }
                     atomic_json(state_path, state)
-                    selection = job / names["selection"]
+                    selection = selection_path / names["selection"]
                     if not selection.exists():
                         select_job(
-                            store, catalog, method, cfg["selection"][method], job, reader, names
+                            store, catalog, method, cfg["selection"][method], selection_path, reader, names
                         )
                     prepared = prepare_training_data(
                         str(store), str(selection), "all", reader, cfg["preprocessing"]

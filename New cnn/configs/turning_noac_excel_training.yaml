@@ -2,6 +2,8 @@ includes:
 - turning_top_training.yaml
 overrides:
   conditions: [turning_noac]
+  dataset:
+    exclude_stages: [22, 23, 24, 25, 26]
   device: cuda
   output:
     name: turning_noac_excel_um_training

@@ -1,0 +1,11 @@
+output: ../logs/turning_noac_acc_fft_workflow
+steps:
+  - name: Build corrected noAC features with ACC FFT bins
+    command: build-features
+    config: turning_noac_paired_excel.yaml
+  - name: Binary classification with R2 and Fisher J
+    command: train-batch
+    config: turning_noac_binary_corrected.yaml
+  - name: Three-class classification with R2 and Fisher J
+    command: train-batch
+    config: turning_noac_three_class_corrected.yaml

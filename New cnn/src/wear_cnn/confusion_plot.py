@@ -1,9 +1,25 @@
 """Count matrix with row (recall) and column (precision) summaries."""
 
+from functools import lru_cache
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+from matplotlib import font_manager
+from matplotlib.ft2font import FT2Font
 import numpy as np
+
+
+@lru_cache(maxsize=16)
+def _label_font(names):
+    required = {ord(char) for name in names for char in name if not char.isascii()}
+    if not required:
+        return None
+    for font in font_manager.fontManager.ttflist:
+        if "lastresort" in Path(font.fname).stem.lower():
+            continue
+        if required.issubset(FT2Font(font.fname).get_charmap()):
+            return font_manager.FontProperties(fname=font.fname)
+    return None
 
 
 def plot_confusion(matrix, output: str | Path, class_names=None):
@@ -75,6 +91,10 @@ def plot_confusion(matrix, output: str | Path, class_names=None):
         yticklabels=["Correct", "Incorrect"],
         title="Column summary (precision)",
     )
+    label_font = _label_font(tuple(names))
+    if label_font is not None:
+        for label in (*ax.get_xticklabels(), *ax.get_yticklabels(), *col_ax.get_xticklabels()):
+            label.set_fontproperties(label_font)
     summary_ax = fig.add_subplot(grid[1, 1])
     summary_ax.axis("off")
     count = int(matrix.sum())
